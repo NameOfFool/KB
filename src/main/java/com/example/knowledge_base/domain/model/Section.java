@@ -1,12 +1,10 @@
-package com.example.knowledge_base.models;
+package com.example.knowledge_base.domain.model;
 
 import jakarta.persistence.*;
 
-import java.util.List;
-
 @Entity
-@Table(name = "domains")
-public class Domain {
+@Table(name = "sections")
+public class Section {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
@@ -17,16 +15,15 @@ public class Domain {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String description;
 
-    @OneToMany(mappedBy = "domain",cascade = {
-            CascadeType.ALL
-    })
-    private List<Section> sections;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="domain_id", referencedColumnName = "id")
+    private Domain domain;
 
-    public Domain(String name, String description) {
+    public Section(String name, String description) {
         this.name = name;
         this.description = description;
     }
-    public Domain(){
+    public Section(){
 
     }
 
@@ -39,8 +36,8 @@ public class Domain {
     public String getDescription(){
         return description;
     }
-    public List<Section> getSections(){
-        return sections;
+    public Domain getDomain(){
+        return domain;
     }
 
     public void setId(Integer id){
@@ -52,7 +49,7 @@ public class Domain {
     public void setDescription(String description){
         this.description = description;
     }
-    public void setSections(List<Section> sections){
-        this.sections = sections;
+    public void setDomain(Domain domain){
+        this.domain = domain;
     }
 }

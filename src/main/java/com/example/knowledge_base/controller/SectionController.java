@@ -1,9 +1,9 @@
-package com.example.knowledge_base.controllers;
+package com.example.knowledge_base.controller;
 
 
 import com.example.knowledge_base.exception.ResouceNotFoundException;
-import com.example.knowledge_base.models.Section;
-import com.example.knowledge_base.repositories.SectionRepository;
+import com.example.knowledge_base.domain.model.Section;
+import com.example.knowledge_base.repository.SectionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

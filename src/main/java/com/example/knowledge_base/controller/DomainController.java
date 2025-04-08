@@ -1,14 +1,13 @@
-package com.example.knowledge_base.controllers;
+package com.example.knowledge_base.controller;
 
 import com.example.knowledge_base.exception.ResouceNotFoundException;
-import com.example.knowledge_base.models.Domain;
-import com.example.knowledge_base.repositories.DomainRepository;
+import com.example.knowledge_base.domain.model.Domain;
+import com.example.knowledge_base.repository.DomainRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RequestMapping("/api/domains")
