@@ -8,7 +8,7 @@
 		<version>3.4.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.example</groupId>
+	<groupId>com.fool</groupId>
 	<artifactId>knowledge-base</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>knowledge-base</name>
@@ -87,6 +87,8 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
+			<version>1.18.38</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>

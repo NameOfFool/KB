@@ -2,38 +2,41 @@ package com.fool.knowledge_base.service;
 
 import com.fool.knowledge_base.domain.model.User;
 import com.fool.knowledge_base.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
-    @Autowired
-    private JwtService jwtService;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private AuthenticationManager authManager;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
-
-    public User register(User user){
-        user.setPassword(encoder.encode(user.getPassword()));
-        userRepository.save(user);
-        return user;
+    public User save(User user){
+        return userRepository.save(user);
     }
-    public String verify(User user){
-        Authentication authentication = authManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword()));
-        if(authentication.isAuthenticated()){
-            return jwtService.generateToken(user.getUsername());
+
+    public User create(User user){
+        if(userRepository.existsByEmail(user.getEmail())){
+            throw new RuntimeException("Пользователь с такой почтой уже существует");
         }
-        else{
-            return "fail";
+        if(userRepository.existsByUsername(user.getUsername())){
+            throw new RuntimeException("Пользователь с таким именем уже существует");
         }
+
+        return save(user);
+    }
+
+    public User getUserByUsername(String username){
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
+    }
+    public UserDetailsService userDetailsService(){
+        return this::getUserByUsername;
+    }
+    public User getCurrentUser(){
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return getUserByUsername(username);
     }
 }

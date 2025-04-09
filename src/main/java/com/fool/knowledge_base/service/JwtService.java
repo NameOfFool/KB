@@ -1,6 +1,5 @@
 package com.fool.knowledge_base.service;
 
-import com.fool.knowledge_base.domain.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -13,19 +12,17 @@ import javax.crypto.SecretKey;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.function.Function;
 
 @Service
 public class JwtService {
-    private String secretKey = "";
+    private String secretKey = "a0string0secret0at0least02560bits0longlonglonglonglong";
 
     public JwtService(){
         try{
             KeyGenerator keyGen = KeyGenerator.getInstance("HmacSHA256");
-            SecretKey k = keyGen.generateKey();
-            secretKey = Base64.getEncoder().encodeToString(k.getEncoded());
+            //SecretKey k = keyGen.generateKey();
+            //secretKey = Base64.getEncoder().encodeToString(k.getEncoded());
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
@@ -62,7 +59,7 @@ public class JwtService {
                 .parseSignedClaims(token)
                 .getPayload();
     }
-    public boolean validateToken(String token, UserDetails userDetails){
+    public boolean isTokenValid(String token, UserDetails userDetails){
         String username = extractUsername(token);
         return username.equals(userDetails.getUsername()) && !(isTokenExpired(token));
     }
